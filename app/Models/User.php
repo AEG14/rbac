@@ -61,11 +61,25 @@ class User extends Authenticatable
         return $this->roles->contains('id', $role->id);
     }
 
-    public function bookEntry(){
-        return $this->hasMany(Book::class, 'user_id' ,'id');
+    public function permissions()
+    {
+        return $this->roles->flatMap(function ($role) {
+            return $role->permissions;
+        })->unique('id');
     }
 
-    public function userInfo(){
+    public function hasPermissionTo($permission)
+    {
+        return $this->permissions()->contains('name', $permission);
+    }
+
+    public function bookEntry()
+    {
+        return $this->hasMany(Book::class, 'user_id', 'id');
+    }
+
+    public function userInfo()
+    {
         return $this->hasOne(UserInfo::class);
     }
 }

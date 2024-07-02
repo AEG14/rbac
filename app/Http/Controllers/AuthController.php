@@ -49,10 +49,10 @@ class AuthController extends Controller
             'user_id' => $user->id
         ]);
 
-        $studentRole = Role::where('name', 'student')->first();
-        if ($studentRole) {
-            $user->roles()->attach($studentRole);
-        }
+        // $studentRole = Role::where('name', 'student')->first();
+        // if ($studentRole) {
+        //     $user->roles()->attach($studentRole);
+        // }
 
         return redirect()->route('login');
     }

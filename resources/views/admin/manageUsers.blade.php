@@ -35,6 +35,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Roles</th>
+                        <th>Permissions</th> <!-- New Column for Permissions -->
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -56,6 +57,16 @@
             </select>
             <button type="submit" class="btn btn-primary mt-2">Update</button>
         </form>
+    </td>
+    <td>
+        <ul>
+            @foreach($user->roles->flatMap->permissions->unique('id') as $permission)
+                <li>{{ $permission->name }}</li>
+            @endforeach
+        </ul>
+    </td>
+    <td>
+        <!-- Add any other actions here if necessary -->
     </td>
 </tr>
 @endforeach

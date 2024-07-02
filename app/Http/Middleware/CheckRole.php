@@ -20,8 +20,8 @@ class CheckRole
             return redirect()->to(route('home'));
         }
 
-        foreach($roles as $role){
-            if($request->user()->hasRole($role)){
+        foreach ($roles as $role) {
+            if ($request->user()->hasRole($role)) {
                 return $next($request);
             }
         }
