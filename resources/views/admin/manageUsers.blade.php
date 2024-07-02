@@ -2,7 +2,7 @@
 
 @section('title', 'Manage Users')
 
-<!-- Alert messages -->
+<!-- simple alerts if nigana -->
 <div class="row mt-3">
     <div class="col">
         @if(session('success'))
