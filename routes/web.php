@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
 
+use App\Models\User;
+
 
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -37,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/', 'homepage')->name('home');
 
     Route::get('/acctg', [UserController::class, 'loadAcctgPage'])
-        ->middleware(['role:admin', 'permission:can_view_all|can_manage'])
+        ->middleware(['permission:can_view_all|can_manage|can_create|can_update'])
         ->name('acctg');
     Route::get('/prod', [UserController::class, 'loadAssemblePage'])->middleware('role:admin')->middleware('permission:can_view_all|can_manage')->name('prod');
 
@@ -47,9 +49,18 @@ Route::middleware('auth')->group(function () {
         Route::put('/admin/users/{user}/update-role', [AdminController::class, 'updateUserRole'])->name('updateUserRole');
         Route::post('/admin/roles', [AdminController::class, 'createRole'])->name('createRole');
     });
-
+    
     Route::get('/acctg/new', [BookController::class, 'newLedgerEntry'])->middleware('role:admin')->middleware('permission:can_create|can_manage')->name('newledger');
     Route::post('/acctg/new', [BookController::class, 'saveNewLedgerEntry'])->middleware('permission:can_create|can_manage')->name('saveledger');
-    Route::get('/acctg/view/all', [BookController::class, 'showAllLedgers'])->middleware('permission:can_view_all|can_manage')->name('ledgers');
+    Route::get('/acctg/view/all', [BookController::class, 'showAllLedgers'])->middleware(['role:admin', 'permission:can_view_all|can_manage'])->name('ledgers');
     Route::get('/acctg/view/{id}', [BookController::class, 'viewLedgerDetails'])->middleware('permission:can_view_detail|can_manage')->name('ledger');
 });
+
+// Debug route to check roles and permissions
+Route::get('/debug', function () {
+    $user = User::find(auth()->id());
+    return response()->json([
+        'roles' => $user->roles->pluck('name'),
+        'permissions' => $user->permissions()->pluck('name')
+    ]);
+})->middleware('auth');

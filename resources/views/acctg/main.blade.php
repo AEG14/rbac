@@ -6,7 +6,8 @@
     <p>
         @can('create')
            <a href="{{ url('acctg/new') }}">Add New Ledger Entry</a>
-        @elsecan('viewAll')
+        @endcan
+        @can('viewAll')
            <a href="{{ url('acctg/view/all') }}">View All Ledgers</a>
         @endcan
     </p>
