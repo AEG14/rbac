@@ -73,6 +73,16 @@ class User extends Authenticatable
         return $this->permissions()->contains('name', $permission);
     }
 
+    public function manageUsers()
+    {
+        $users = User::with('roles.permissions')->paginate(10); // Adjust the number as needed
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('manageUsers', compact('users', 'roles', 'permissions'));
+    }
+
+
     public function bookEntry()
     {
         return $this->hasMany(Book::class, 'user_id', 'id');

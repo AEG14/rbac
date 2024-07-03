@@ -18,7 +18,7 @@ class AdminController extends Controller
 
     public function manageUsers()
     {
-        $users = User::with('roles')->select('id', 'name', 'email')->get();
+        $users = User::with('roles.permissions')->paginate(10); // Add pagination
         $roles = Role::all();
         $permissions = Permission::all();
 
@@ -36,6 +36,32 @@ class AdminController extends Controller
             return back()->with('error', 'Error updating user role. Please try again.');
         }
     }
+
+    public function updateUserPermissions(Request $request, User $user)
+    {
+        try {
+            $role = $user->roles()->first(); // Assuming a user has a single role for simplicity
+            if ($role) {
+                $role->permissions()->sync($request->permissions);
+            }
+            return back()->with('success', 'User permissions updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating user permissions: ' . $e->getMessage());
+            return back()->with('error', 'Error updating user permissions. Please try again.');
+        }
+    }
+
+    public function deleteUser(User $user)
+    {
+        try {
+            $user->delete();
+            return back()->with('success', 'User deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting user: ' . $e->getMessage());
+            return back()->with('error', 'Error deleting user. Please try again.');
+        }
+    }
+
 
     // public function updateUserRole(Request $request, User $user)
     // {

@@ -31,7 +31,7 @@
     <h1>Welcome to the Site</h1>
     <br>
     <a href="{{ route('acctg') }}"
-        @unless(Auth::user()->hasPermissionTo('can_manage')|| Auth::user()->hasPermissionTo('can_view_all'))
+        @unless(Auth::user()->hasPermissionTo('can_manage') || Auth::user()->hasPermissionTo('can_view_all'))
             class="link-dark not-allowed" style="pointer-events: none; cursor: not-allowed;"
         @endunless
     >Accounting</a>

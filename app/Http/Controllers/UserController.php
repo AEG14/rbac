@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //
-    public function loadAcctgPage(){
+    public function loadAcctgPage()
+    {
         return view('acctg.main');
     }
 
-    public function loadAssemblePage(){
+    public function loadAssemblePage()
+    {
         return view('production.main');
     }
 }

@@ -47,9 +47,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin', [AdminController::class, 'index'])->name('dash');
         Route::get('/admin/users', [AdminController::class, 'manageUsers'])->name('usertool');
         Route::put('/admin/users/{user}/update-role', [AdminController::class, 'updateUserRole'])->name('updateUserRole');
+        Route::put('/admin/users/{user}/update-permissions', [AdminController::class, 'updateUserPermissions'])->name('updateUserPermissions');
+        Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser'])->name('deleteUser');
         Route::post('/admin/roles', [AdminController::class, 'createRole'])->name('createRole');
     });
-    
+
     Route::get('/acctg/new', [BookController::class, 'newLedgerEntry'])->middleware('role:admin')->middleware('permission:can_create|can_manage')->name('newledger');
     Route::post('/acctg/new', [BookController::class, 'saveNewLedgerEntry'])->middleware('permission:can_create|can_manage')->name('saveledger');
     Route::get('/acctg/view/all', [BookController::class, 'showAllLedgers'])->middleware(['role:admin', 'permission:can_view_all|can_manage'])->name('ledgers');
